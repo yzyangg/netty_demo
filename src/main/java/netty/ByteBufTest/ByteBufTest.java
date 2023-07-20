@@ -23,8 +23,9 @@ public class ByteBufTest {
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.heapBuffer();
         ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer();
 
-        System.out.println(byteBuf);
-        System.out.println(buffer);
+        //
+        System.out.println(byteBuf.getClass());
+        System.out.println(buffer.getClass());
         
 
     }
