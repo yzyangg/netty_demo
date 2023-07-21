@@ -2,6 +2,7 @@ package netty.echo;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -31,7 +32,6 @@ public class EchoClient {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .option(ChannelOption.TCP_NODELAY, true)
                     .handler(new EchoClientHandler());
 
             ChannelFuture channelFuture = bootstrap.connect(new InetSocketAddress("localhost", 8080)).sync();
@@ -41,21 +41,9 @@ public class EchoClient {
             try (BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
                 String userInput;
                 while ((userInput = stdIn.readLine()) != null) {
-                    buffer.put(userInput.getBytes());
-                    // 读写转换
-                    buffer.flip();
-                    channel.writeAndFlush(buffer);
-
-                    // 清空缓冲区
-                    buffer.rewind();
-
-                    ByteBuf byteBuf = Unpooled.copiedBuffer(buffer);
-
+                    ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer(10);
+                    byteBuf.writeBytes(userInput.getBytes());
                     channel.writeAndFlush(byteBuf);
-
-                    // 清空缓冲区
-                    buffer.clear();
-
                 }
             }
         } catch (UnknownHostException e) {

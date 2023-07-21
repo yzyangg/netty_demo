@@ -26,8 +26,6 @@ public class EchoServer {
             ChannelFuture channelFuture = server.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new EchoServerHandler())
-                    .option(ChannelOption.SO_BACKLOG, 128)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .bind(new InetSocketAddress("localhost", 8080));
 
             channelFuture.sync();

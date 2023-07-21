@@ -18,6 +18,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         ByteBuf byteBuf = (ByteBuf) msg;
         String s = byteBuf.toString(Charset.defaultCharset());
         System.out.println("服务端收到客户端发送的消息: " + s);
+        ctx.writeAndFlush(byteBuf);
     }
 
     @Override
