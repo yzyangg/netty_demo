@@ -30,14 +30,16 @@ public class EchoClient {
 
         try {
             Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(group)
+            ChannelFuture channelFuture = bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .handler(new EchoClientHandler());
+                    .handler(new EchoClientHandler())
+                    .connect(new InetSocketAddress("localhost", 8080)).sync();
 
-            ChannelFuture channelFuture = bootstrap.connect(new InetSocketAddress("localhost", 8080)).sync();
             Channel channel = channelFuture.channel();
             System.out.printf("客户端启动成功\n 请输入要发送的数据");
             ByteBuffer buffer = ByteBuffer.allocate(32);
+
+
             try (BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
                 String userInput;
                 while ((userInput = stdIn.readLine()) != null) {

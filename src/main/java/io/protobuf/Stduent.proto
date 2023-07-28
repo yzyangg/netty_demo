@@ -1,0 +1,32 @@
+syntax = "proto3";
+option optimize_for = SPEED;
+option java_package = "io.protobuf";
+option java_outer_classname = "MyDataInfo";
+
+
+message MyMessage{
+  enum DataType{
+    STUDENT = 0;// datatype是0就是student
+    WORKER = 1; // datatype是1就是worker
+  }
+
+  //标识 传来的是student还是worker
+  DataType dataType = 1; // 1是标识
+
+  oneof dataBody{
+    Student student = 2; // 2是标识
+    Worker worker = 3; // 3是标识
+  }
+
+}
+
+
+
+message Student{
+  int32 id = 1;
+  string name = 2;
+}
+message Worker{
+  int32 age = 1;
+  string name = 2;
+}
